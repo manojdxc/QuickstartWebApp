@@ -11,6 +11,7 @@ pool:
 
 variables:
   solution: '**/*.sln'
+
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
@@ -52,3 +53,16 @@ steps:
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: drop'
   condition: succeeded()
+
+- task: AzureResourceManagerTemplateDeployment@3
+  inputs:
+    deploymentScope: 'Resource Group'
+    azureResourceManagerConnection: 'Free Trial(d1e5299b-d486-4fe1-b51a-83dcaa638d20)'
+    subscriptionId: 'd1e5299b-d486-4fe1-b51a-83dcaa638d20'
+    action: 'Create Or Update Resource Group'
+    resourceGroupName: 'Quickstart1'
+    location: 'East US'
+    templateLocation: 'URL of the file'
+    csmFileLink: 'https://github.com/Azure/azure-quickstart-templates/blob/master/101-vm-simple-windows/azuredeploy.json'
+    csmParametersFileLink: 'https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-vm-simple-windows/azuredeploy.parameters.json'
+    deploymentMode: 'Incremental'
